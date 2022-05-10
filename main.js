@@ -1,5 +1,3 @@
-'use strict';
-
 const state = {
   langs: {
     en: {
@@ -49,7 +47,7 @@ const state = {
         KeyL: 'l',
         Semicolon: ';',
         Quote: "'",
-        Enter: 'Enter'
+        Enter: 'Enter',
       },
       row4: {
         ShiftLeft: 'Shift',
@@ -76,8 +74,8 @@ const state = {
         ArrowDown: 'ArrowDown',
         ArrowRight: 'ArrowRight',
         ControlRight: 'Control',
-        
-      }
+
+      },
     },
     ru: {
       row1: {
@@ -126,7 +124,7 @@ const state = {
         KeyL: 'д',
         Semicolon: 'ж',
         Quote: 'э',
-        Enter: 'Enter'
+        Enter: 'Enter',
       },
       row4: {
         ShiftLeft: 'Shift',
@@ -153,18 +151,18 @@ const state = {
         ArrowDown: 'ArrowDown',
         ArrowRight: 'ArrowRight',
         ControlRight: 'Control',
-      }
-    }
+      },
+    },
   },
   currLeng: null,
   getCode: [],
   combinationChangingLang: ['ShiftLeft', 'AltLeft'].sort().toString(),
-}
+};
 
 function createWrap() {
   const BODY = document.querySelector('body');
   const WRAPPER = document.createElement('div');
-  
+
   WRAPPER.classList.add('wrapper');
   BODY.prepend(WRAPPER);
 }
@@ -172,16 +170,80 @@ function createWrap() {
 function createTextarea() {
   const WRAPPER = document.querySelector('.wrapper');
   const TEXTAREA = document.createElement('textarea');
-  
+
   WRAPPER.append(TEXTAREA);
 }
 
 function createKeyboardWrap() {
   const WRAPPER = document.querySelector('.wrapper');
   const KEYBOARD = document.createElement('div');
-  
+
   KEYBOARD.classList.add('keyboard-wrap');
   WRAPPER.append(KEYBOARD);
+}
+
+function clearKeyboard() {
+  document.querySelectorAll('.row').forEach((item) => item.remove());
+}
+
+function drawKeyboard(keyboard) {
+  const KEYBOARD_WRAP = document.querySelector('.keyboard-wrap');
+
+  Object.values(keyboard).forEach((value) => {
+    const ROW = document.createElement('div');
+
+    ROW.classList.add('row');
+    KEYBOARD_WRAP.append(ROW);
+
+    Object.entries(value).forEach((item) => {
+      const [key, code] = item;
+
+      const TEXT = ['Backquote', 'Digit', 'Minus', 'Equal', 'Key', 'Bracket', 'Backslash', 'Semicolon', 'Quote',
+        'Comma', 'Period', 'Slash', 'Space'];
+      const BTN = document.createElement('button');
+
+      switch (key) {
+        case 'ArrowUp':
+          BTN.textContent = '▲';
+          break;
+
+        case 'ArrowDown':
+          BTN.textContent = '▼';
+          break;
+
+        case 'ArrowLeft':
+          BTN.textContent = '◄';
+          break;
+
+        case 'ArrowRight':
+          BTN.textContent = '►';
+          break;
+
+        case 'ControlLeft':
+        case 'ControlRight':
+          BTN.textContent = 'Ctrl';
+          break;
+
+        case 'MetaRight':
+          BTN.textContent = 'Win';
+          break;
+
+        default:
+          BTN.textContent = code;
+      }
+
+      BTN.classList.add('key');
+      BTN.classList.add(key);
+
+      if (key === 'Space') BTN.classList.add('space');
+
+      TEXT.forEach((letter) => {
+        if (key.startsWith(letter)) BTN.classList.add('text');
+      });
+
+      ROW.append(BTN);
+    });
+  });
 }
 
 function createKeyboard(keyboard) {
@@ -189,81 +251,19 @@ function createKeyboard(keyboard) {
   drawKeyboard(keyboard);
 }
 
-function clearKeyboard() {
-  document.querySelectorAll('.row').forEach(item => item.remove());
-}
-
-function drawKeyboard(keyboard) {
-  const KEYBOARD_WRAP = document.querySelector('.keyboard-wrap');
-  
-  for (let key in keyboard) {
-    const ROW = document.createElement('div');
-    
-    ROW.classList.add('row');
-    KEYBOARD_WRAP.append(ROW);
-    
-    for (let item in keyboard[key]) {
-      const TEXT = ['Backquote', 'Digit', 'Minus', 'Equal', 'Key', 'Bracket', 'Backslash', 'Semicolon', 'Quote',
-        'Comma', 'Period', 'Slash', 'Space'];
-      const BTN = document.createElement('button');
-      
-      switch (item) {
-        case 'ArrowUp':
-          BTN.style.backgroundImage = 'url(assets/svg/arrow_drop_up_black_24dp.svg)';
-          break;
-        
-        case 'ArrowDown':
-          BTN.style.backgroundImage = 'url(assets/svg/arrow_drop_down_black_24dp.svg)';
-          break;
-        
-        case 'ArrowLeft':
-          BTN.style.backgroundImage = 'url(assets/svg/arrow_left_black_24dp.svg)';
-          break;
-        
-        case 'ArrowRight':
-          BTN.style.backgroundImage = 'url(assets/svg/arrow_right_black_24dp.svg)';
-          break;
-        
-        case 'ControlLeft':
-        case 'ControlRight':
-          BTN.textContent = 'Ctrl';
-          break;
-        
-        case 'MetaRight':
-          BTN.textContent = 'Win';
-          break;
-        
-        default:
-          BTN.textContent = keyboard[key][item];
-      }
-      
-      BTN.classList.add('key');
-      BTN.classList.add(item);
-      
-      if (item === 'Space') BTN.classList.add('space');
-      
-      TEXT.forEach(letter => {
-        if (item.startsWith(letter)) BTN.classList.add('text')
-      });
-      
-      ROW.append(BTN);
-    }
-  }
-}
-
 function createExtraInfo() {
   const WRAPPER = document.querySelector('.wrapper');
   const EXTRA_INFO = document.createElement('div');
   const OC = document.createElement('p');
   const CHANGE_LANG = document.createElement('p');
-  
+
   EXTRA_INFO.classList.add('extra-info');
   WRAPPER.append(EXTRA_INFO);
-  
+
   OC.classList.add('info');
   OC.textContent = 'Клавиатура создана в операционной системе Windows';
   EXTRA_INFO.append(OC);
-  
+
   CHANGE_LANG.classList.add('change-lang');
   CHANGE_LANG.textContent = 'Для переключения языка комбинация: левыe shift + alt';
   EXTRA_INFO.append(CHANGE_LANG);
@@ -278,12 +278,12 @@ function unSetHighlightsBtn(e) {
 }
 
 function changeLang() {
-  const {getCode, combinationChangingLang} = state;
-  
+  const { getCode, combinationChangingLang } = state;
+
   if (getCode.length === 2 && getCode.sort().toString() === combinationChangingLang) {
     state.currLeng = state.currLeng === 'en' ? 'ru' : 'en';
     state.getCode = [];
-    
+
     createKeyboard(state.langs[state.currLeng]);
   }
 }
@@ -302,9 +302,24 @@ function setLang() {
   state.currLeng = localStorage.getItem('lang') ? localStorage.getItem('lang') : 'en';
 }
 
+function getCursorPosition(textarea) {
+  let currPos = 0;
+
+  if (document.selection) {
+    const sel = document.selection.createRange();
+
+    textarea.focus();
+    currPos = sel.text.length;
+  } else if (textarea.selectionStart || textarea.selectionStart === '0') {
+    currPos = textarea.selectionStart;
+  }
+
+  return currPos;
+}
+
 function typingText() {
   const TEXTAREA = document.querySelector('textarea');
-  
+
   document.querySelector('.keyboard-wrap').addEventListener('click', (e) => {
     if (e.target.classList.contains('key')) {
       TEXTAREA.focus();
@@ -313,41 +328,38 @@ function typingText() {
         TEXTAREA.textContent += e.target.textContent;
       } else {
         switch (e.target.classList[1]) {
+          case 'ArrowUp':
+          case 'ArrowDown':
+          case 'ArrowLeft':
+          case 'ArrowRight':
+            TEXTAREA.textContent += document.querySelector(`.${e.target.classList[1]}`).textContent;
+            break;
+            
+          case 'Enter':
+            TEXTAREA.textContent += '\n';
+            break;
+  
           case 'Tab':
             TEXTAREA.textContent += '    ';
             break;
-          
+  
           case 'Delete':
-            const start = TEXTAREA.textContent.slice(0, getCursorPosition(TEXTAREA));
-            const end = TEXTAREA.textContent.slice(getCursorPosition(TEXTAREA) + 1);
-            
-            TEXTAREA.textContent = start + end;
+            TEXTAREA.textContent = TEXTAREA.textContent.slice(0, getCursorPosition(TEXTAREA))
+              + TEXTAREA.textContent.slice(getCursorPosition(TEXTAREA) + 1);
+            break;
+  
+          default:
         }
       }
     }
   });
 }
 
-function getCursorPosition(textarea) {
-  let currPos = 0;
-  
-  if (document.selection) {
-    const sel = document.selection.createRange();
-    
-    textarea.focus();
-    currPos = sel.text.length;
-  } else if (textarea.selectionStart || textarea.selectionStart === '0') {
-    currPos = textarea.selectionStart;
-  }
-  
-  return currPos;
-}
-
 setLang();
 
 document.addEventListener('DOMContentLoaded', () => {
-  const {langs, currLeng} = state;
-  
+  const { langs, currLeng } = state;
+
   createWrap();
   createTextarea();
   createKeyboardWrap();
