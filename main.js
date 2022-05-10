@@ -202,11 +202,18 @@ function drawKeyboard(keyboard) {
     KEYBOARD_WRAP.append(ROW);
     
     for (let item in keyboard[key]) {
+      const TEXT = ['Backquote', 'Digit', 'Minus', 'Equal', 'Key', 'Bracket', 'Backslash', 'Semicolon', 'Quote',
+        'Comma', 'Period', 'Slash', 'Space'];
       const BTN = document.createElement('button');
       
       BTN.textContent = keyboard[key][item];
       BTN.classList.add('key');
       BTN.classList.add(item);
+      
+      TEXT.forEach(letter => {
+        if (item.startsWith(letter)) BTN.classList.add('text')
+      });
+      
       ROW.append(BTN);
     }
   }
@@ -231,13 +238,11 @@ function createExtraInfo() {
 }
 
 function setHighlightsBtn(e) {
-  const BTN = document.querySelector(`.${e.code}`);
-  BTN.classList.add('key-highlight');
+  document.querySelector(`.${e.code}`).classList.add('key-highlight');
 }
 
 function unSetHighlightsBtn(e) {
-  const BTN = document.querySelector(`.${e.code}`);
-  BTN.classList.remove('key-highlight');
+  document.querySelector(`.${e.code}`).classList.remove('key-highlight');
 }
 
 function changeLang() {
@@ -265,6 +270,47 @@ function setLang() {
   state.currLeng = localStorage.getItem('lang') ? localStorage.getItem('lang') : 'en';
 }
 
+function typingText() {
+  const TEXTAREA = document.querySelector('textarea');
+  
+  document.querySelector('.keyboard-wrap').addEventListener('click', (e) => {
+    if (e.target.classList.contains('key')) {
+      TEXTAREA.focus();
+      
+      if (e.target.classList.contains('text')) {
+        TEXTAREA.textContent += e.target.textContent;
+      } else {
+        switch (e.target.classList[1]) {
+          case 'Tab':
+            TEXTAREA.textContent += '    ';
+            break;
+          
+          case 'Delete':
+            const start = TEXTAREA.textContent.slice(0, getCursorPosition(TEXTAREA));
+            const end = TEXTAREA.textContent.slice(getCursorPosition(TEXTAREA) + 1);
+            
+            TEXTAREA.textContent = start + end;
+        }
+      }
+    }
+  });
+}
+
+function getCursorPosition(textarea) {
+  let currPos = 0;
+  
+  if (document.selection) {
+    const sel = document.selection.createRange();
+    
+    textarea.focus();
+    currPos = sel.text.length;
+  } else if (textarea.selectionStart || textarea.selectionStart === '0') {
+    currPos = textarea.selectionStart;
+  }
+  
+  return currPos;
+}
+
 setLang();
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -275,6 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
   createKeyboardWrap();
   createKeyboard(langs[currLeng]);
   createExtraInfo();
+  typingText();
 });
 
 document.addEventListener('keydown', setHighlightsBtn);
