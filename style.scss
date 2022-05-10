@@ -1,11 +1,59 @@
 body {
+  font-size: 12px;
+  font-family: monospace;
+
+  background-color: #ddd;
+
   .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+
+    textarea {
+      width: 400px;
+      height: 200px;
+      margin: 20px;
+
+      outline: none;
+    }
+
     .keyboard-wrap {
+      max-width: 1000px;
+
       .row {
+        display: flex;
+        justify-content: space-between;
+        margin: 0.7em auto;
+
+        .key {
+          padding: 1em 2em;
+
+          background-color: #eff0f2;
+          background-repeat: no-repeat;
+          background-position: center;
+          color: #888;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          box-shadow: inset 1px 0 25px #dfdfdf, 0 1px 0 #cfcfcf, 0 1px 0 #bfbfbf, 0 1px 1px #6f6f6f;
+
+          &:active {
+            box-shadow: inset 0 0 50px #ddd, 0 0 2px #888;
+          }
+        }
+
+        .space {
+          width: 315px;
+        }
         .key-highlight {
           background-color: antiquewhite;
         }
       }
+    }
+
+    .extra-info {
+      color: #888;
     }
   }
 }

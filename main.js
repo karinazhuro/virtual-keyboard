@@ -76,6 +76,7 @@ const state = {
         ArrowDown: 'ArrowDown',
         ArrowRight: 'ArrowRight',
         ControlRight: 'Control',
+        
       }
     },
     ru: {
@@ -206,9 +207,40 @@ function drawKeyboard(keyboard) {
         'Comma', 'Period', 'Slash', 'Space'];
       const BTN = document.createElement('button');
       
-      BTN.textContent = keyboard[key][item];
+      switch (item) {
+        case 'ArrowUp':
+          BTN.style.backgroundImage = 'url(assets/svg/arrow_drop_up_black_24dp.svg)';
+          break;
+        
+        case 'ArrowDown':
+          BTN.style.backgroundImage = 'url(assets/svg/arrow_drop_down_black_24dp.svg)';
+          break;
+        
+        case 'ArrowLeft':
+          BTN.style.backgroundImage = 'url(assets/svg/arrow_left_black_24dp.svg)';
+          break;
+        
+        case 'ArrowRight':
+          BTN.style.backgroundImage = 'url(assets/svg/arrow_right_black_24dp.svg)';
+          break;
+        
+        case 'ControlLeft':
+        case 'ControlRight':
+          BTN.textContent = 'Ctrl';
+          break;
+        
+        case 'MetaRight':
+          BTN.textContent = 'Win';
+          break;
+        
+        default:
+          BTN.textContent = keyboard[key][item];
+      }
+      
       BTN.classList.add('key');
       BTN.classList.add(item);
+      
+      if (item === 'Space') BTN.classList.add('space');
       
       TEXT.forEach(letter => {
         if (item.startsWith(letter)) BTN.classList.add('text')
