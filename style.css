@@ -1,0 +1,50 @@
+body {
+  font-size: 12px;
+  font-family: monospace;
+  background-color: #ddd;
+}
+body .wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+body .wrapper textarea {
+  width: 400px;
+  height: 200px;
+  margin: 20px;
+  outline: none;
+}
+body .wrapper .keyboard-wrap {
+  max-width: 1000px;
+}
+body .wrapper .keyboard-wrap .row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.7em auto;
+}
+body .wrapper .keyboard-wrap .row .key {
+  padding: 1em 2em;
+  background-color: #eff0f2;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: #888;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: inset 1px 0 25px #dfdfdf, 0 1px 0 #cfcfcf, 0 1px 0 #bfbfbf, 0 1px 1px #6f6f6f;
+}
+body .wrapper .keyboard-wrap .row .key:active {
+  box-shadow: inset 0 0 50px #ddd, 0 0 2px #888;
+}
+body .wrapper .keyboard-wrap .row .space {
+  width: 315px;
+}
+body .wrapper .keyboard-wrap .row .key-highlight {
+  background-color: antiquewhite;
+}
+body .wrapper .extra-info {
+  color: #888;
+}
+
+/*# sourceMappingURL=style.css.map */
